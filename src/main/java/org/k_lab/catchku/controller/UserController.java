@@ -3,6 +3,7 @@ package org.k_lab.catchku.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.k_lab.catchku.common.dto.ApiResponse;
+import org.k_lab.catchku.controller.dto.request.user.UserCatchKuRequest;
 import org.k_lab.catchku.controller.dto.request.user.UserLoginRequestDto;
 import org.k_lab.catchku.controller.dto.request.user.UserRegisterRequestDto;
 import org.k_lab.catchku.controller.dto.response.UserKuListResponse;
@@ -31,6 +32,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<UserLoginResponseDto> login(@RequestBody @Valid final UserLoginRequestDto request) {
         return ApiResponse.success(SuccessStatus.SIGNIN_SUCCESS, userService.login(request));
+    }
+
+    @PostMapping("/catch")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Boolean> catchKu(@RequestBody @Valid final UserCatchKuRequest request) {
+        return ApiResponse.success(SuccessStatus.CATCH_KU_SUCCESS, userService.catchKu(request));
     }
 
     // 유저가 잡은 ku들 get

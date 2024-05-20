@@ -1,17 +1,22 @@
 package org.k_lab.catchku.service;
 
 import lombok.RequiredArgsConstructor;
+import org.k_lab.catchku.controller.dto.request.user.UserCatchKuRequest;
 import org.k_lab.catchku.controller.dto.request.user.UserLoginRequestDto;
 import org.k_lab.catchku.controller.dto.request.user.UserRegisterRequestDto;
 import org.k_lab.catchku.controller.dto.response.UserKuListResponse;
 import org.k_lab.catchku.controller.dto.response.UserLoginResponseDto;
 import org.k_lab.catchku.controller.dto.response.UserRegisterResponseDto;
 import org.k_lab.catchku.domain.Department;
+import org.k_lab.catchku.domain.Ku;
 import org.k_lab.catchku.domain.User;
+import org.k_lab.catchku.domain.UserKu;
 import org.k_lab.catchku.exception.ErrorStatus;
 import org.k_lab.catchku.exception.model.ConflictException;
 import org.k_lab.catchku.exception.model.NotFoundException;
 import org.k_lab.catchku.infrastructure.DepartmentRepository;
+import org.k_lab.catchku.infrastructure.KuRepository;
+import org.k_lab.catchku.infrastructure.UserKuRepository;
 import org.k_lab.catchku.infrastructure.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +28,8 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final KuRepository kuRepository;
+    private final UserKuRepository userKuRepository;
 
     @Transactional
     public UserRegisterResponseDto signup(UserRegisterRequestDto request) {
@@ -54,9 +61,31 @@ public class UserService {
     }
 
     public UserKuListResponse getKuList(Long userId) {
+//        User user = checkUserExist(userId);
+//        return new UserKuListResponse(user.getKuList());
+        return null;
+    }
+
+    @Transactional
+    public Boolean catchKu(UserCatchKuRequest request) {
+        User user = checkUserExist(request.userId());
+        Ku ku = checkKuExist(request.kuName());
+        UserKu userKu = UserKu.newInstance(user, ku);
+        userKuRepository.save(userKu);
+        return true;
+    }
+
+    private User checkUserExist(Long userId) {
         User user = userRepository.findById(userId);
         if (user == null)
             throw new NotFoundException(ErrorStatus.NOT_FOUND_USER_EXCEPTION, ErrorStatus.NOT_FOUND_USER_EXCEPTION.getMessage());
-        return new UserKuListResponse(user.getKuList());
+        return user;
+    }
+
+    private Ku checkKuExist(String kuName) {
+        Ku ku = kuRepository.findByName(kuName);
+        if (ku == null)
+            throw new NotFoundException(ErrorStatus.NOT_FOUND_KU_EXCEPTION, ErrorStatus.NOT_FOUND_KU_EXCEPTION.getMessage());
+        return ku;
     }
 }

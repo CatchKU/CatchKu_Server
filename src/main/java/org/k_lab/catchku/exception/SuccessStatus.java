@@ -18,7 +18,7 @@ public enum SuccessStatus {
      */
     SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입이 완료됐습니다."),
     CREATE_KU_SUCCESS(HttpStatus.CREATED, "Ku가 생성되었습니다."),
-    ;
+    CATCH_KU_SUCCESS(HttpStatus.CREATED, "Ku를 잡았습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
