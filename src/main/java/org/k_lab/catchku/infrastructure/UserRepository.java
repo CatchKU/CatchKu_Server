@@ -9,6 +9,8 @@ public interface UserRepository extends Repository<User, Long> {
     // CREATE
     void save(User user);
 
+    void delete(User user);
+
     // READ
     Boolean existsByEmail(String email);
 

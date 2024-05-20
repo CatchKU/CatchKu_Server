@@ -1,6 +1,6 @@
-package org.k_lab.catchku.controller.dto.response;
+package org.k_lab.catchku.controller.dto.response.user;
 
-public record UserLoginResponseDto(
+public record UserLoginResponse(
         Long id,
         String email,
         String name,

@@ -1,6 +1,6 @@
 package org.k_lab.catchku.controller.dto.response.ku;
 
-public record KuResponse(
+public record KuInfoResponse(
         String name,
         int score
 ) {

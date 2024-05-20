@@ -6,6 +6,8 @@ import org.springframework.data.repository.Repository;
 public interface KuRepository extends Repository<Ku, Long> {
     void save(Ku ku);
 
+    void delete(Ku ku);
+
     Boolean existsByName(String name);
 
     Ku findByName(String name);

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record UserRegisterRequestDto(
+public record UserRegisterRequest(
         @Email(message = "이메일 형식에 맞지 않습니다.")
         @NotNull
         String email,
