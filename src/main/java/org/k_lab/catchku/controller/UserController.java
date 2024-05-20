@@ -1,4 +1,4 @@
-package org.k_lab.catchku.controller.dto;
+package org.k_lab.catchku.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

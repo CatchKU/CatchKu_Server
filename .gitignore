@@ -1,4 +1,5 @@
 application-secret.yaml
+application-db.yaml
 
 HELP.md
 .gradle
