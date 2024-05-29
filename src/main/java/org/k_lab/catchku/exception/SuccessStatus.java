@@ -18,11 +18,15 @@ public enum SuccessStatus {
      */
     REGISTER_SUCCESS(HttpStatus.CREATED, "회원가입이 완료됐습니다."),
     CREATE_KU_SUCCESS(HttpStatus.CREATED, "Ku가 생성되었습니다."),
+    CREATE_ITEM_SUCCESS(HttpStatus.CREATED, "아이템이 생성되었습니다."),
     CATCH_KU_SUCCESS(HttpStatus.CREATED, "Ku를 잡았습니다."),
+    OBTAIN_ITEM_SUCCESS(HttpStatus.CREATED, "아이템을 얻었습니다."),
+
     /**
      * 204 NO_CONTENT
      */
     DELETE_KU_SUCCESS(HttpStatus.NO_CONTENT, "Ku를 삭제하였습니다."),
+    DELETE_ITEM_SUCCESS(HttpStatus.NO_CONTENT, "아이템을 삭제하였습니다."),
     DELETE_USER_SUCCESS(HttpStatus.NO_CONTENT, "유저를 삭제하였습니다.");
 
     private final HttpStatus httpStatus;

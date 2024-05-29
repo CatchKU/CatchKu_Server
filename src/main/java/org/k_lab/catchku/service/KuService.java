@@ -38,7 +38,7 @@ public class KuService {
         Ku ku = kuRepository.findByName(request.kuName());
         if (ku == null)
             throw new NotFoundException(ErrorStatus.NOT_FOUND_KU_EXCEPTION, ErrorStatus.NOT_FOUND_KU_EXCEPTION.getMessage());
-        for (UserKu userKu : ku.getUserList()) {
+        for (UserKu userKu : ku.getUserKuList()) {
             userKu.getUser().getKuList().remove(userKu);
             userKuRepository.delete(userKu);
         }

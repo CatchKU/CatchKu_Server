@@ -3,12 +3,10 @@ package org.k_lab.catchku.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.k_lab.catchku.common.dto.ApiResponse;
-import org.k_lab.catchku.controller.dto.request.user.UserCatchKuRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserInfoRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserLoginRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserRegisterRequest;
+import org.k_lab.catchku.controller.dto.request.user.*;
 import org.k_lab.catchku.controller.dto.response.user.UserCatchedKuResponse;
 import org.k_lab.catchku.controller.dto.response.user.UserLoginResponse;
+import org.k_lab.catchku.controller.dto.response.user.UserOwnedItemResponse;
 import org.k_lab.catchku.controller.dto.response.user.UserRegisterResponse;
 import org.k_lab.catchku.exception.SuccessStatus;
 import org.k_lab.catchku.service.UserService;
@@ -52,12 +50,25 @@ public class UserController {
         return ApiResponse.success(SuccessStatus.CATCH_KU_SUCCESS);
     }
 
+    @PostMapping("/obtain-item")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse obtainItem(@RequestBody @Valid final UserObtainItemRequest request) {
+        userService.obtainItem(request);
+        return ApiResponse.success(SuccessStatus.OBTAIN_ITEM_SUCCESS);
+    }
+
     // 유저가 잡은 ku들 get
     @GetMapping("/ku-list")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<UserCatchedKuResponse>> getKuList(@RequestBody @Valid UserInfoRequest request) {
-        return ApiResponse.success(SuccessStatus.REQUEST_SUCCESS, userService.getKuList(request));
+    public ApiResponse<List<UserCatchedKuResponse>> getKuList(@RequestHeader("userId") Long userId) {
+        return ApiResponse.success(SuccessStatus.REQUEST_SUCCESS, userService.getKuList(userId));
     }
 
+    // 유저가 보유한 item들 get
+    @GetMapping("/item-list")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<UserOwnedItemResponse>> getItemList(@RequestHeader("userId") Long userId) {
+        return ApiResponse.success(SuccessStatus.REQUEST_SUCCESS, userService.getItemList(userId));
+    }
 
 }

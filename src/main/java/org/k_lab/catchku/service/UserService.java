@@ -1,24 +1,16 @@
 package org.k_lab.catchku.service;
 
 import lombok.RequiredArgsConstructor;
-import org.k_lab.catchku.controller.dto.request.user.UserCatchKuRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserInfoRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserLoginRequest;
-import org.k_lab.catchku.controller.dto.request.user.UserRegisterRequest;
+import org.k_lab.catchku.controller.dto.request.user.*;
 import org.k_lab.catchku.controller.dto.response.user.UserCatchedKuResponse;
 import org.k_lab.catchku.controller.dto.response.user.UserLoginResponse;
+import org.k_lab.catchku.controller.dto.response.user.UserOwnedItemResponse;
 import org.k_lab.catchku.controller.dto.response.user.UserRegisterResponse;
-import org.k_lab.catchku.domain.Department;
-import org.k_lab.catchku.domain.Ku;
-import org.k_lab.catchku.domain.User;
-import org.k_lab.catchku.domain.UserKu;
+import org.k_lab.catchku.domain.*;
 import org.k_lab.catchku.exception.ErrorStatus;
 import org.k_lab.catchku.exception.model.ConflictException;
 import org.k_lab.catchku.exception.model.NotFoundException;
-import org.k_lab.catchku.infrastructure.DepartmentRepository;
-import org.k_lab.catchku.infrastructure.KuRepository;
-import org.k_lab.catchku.infrastructure.UserKuRepository;
-import org.k_lab.catchku.infrastructure.UserRepository;
+import org.k_lab.catchku.infrastructure.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +24,8 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
     private final KuRepository kuRepository;
     private final UserKuRepository userKuRepository;
+    private final ItemRepository itemRepository;
+    private final UserItemRepository userItemRepository;
 
     @Transactional
     public UserRegisterResponse register(UserRegisterRequest request) {
@@ -52,7 +46,7 @@ public class UserService {
     public void delete(UserInfoRequest request) {
         User user = checkUserExist(request.userId());
         for (UserKu userKu : user.getKuList()) {
-            userKu.getKu().getUserList().remove(userKu);
+            userKu.getKu().getUserKuList().remove(userKu);
             userKuRepository.delete(userKu);
         }
         userRepository.delete(user);
@@ -72,14 +66,29 @@ public class UserService {
 
     // 잡은 Ku 최근순으로 return
     @Transactional(readOnly = true)
-    public List<UserCatchedKuResponse> getKuList(UserInfoRequest request) {
-        checkUserExist(request.userId());
-        List<UserKu> kuList = userKuRepository.findByUserIdOrderByCreatedDateDesc(request.userId());
+    public List<UserCatchedKuResponse> getKuList(Long userId) {
+        checkUserExist(userId);
+        List<UserKu> kuList = userKuRepository.findByUserIdOrderByCreatedDateDesc(userId);
         List<UserCatchedKuResponse> response = new ArrayList<>();
         for (UserKu userKu : kuList) {
             response.add(new UserCatchedKuResponse(userKu.getKu().getName(), userKu.getCreatedDate()));
         }
         return response;
+    }
+
+    @Transactional
+    public void obtainItem(UserObtainItemRequest request) {
+        User user = checkUserExist(request.userId());
+        Item item = checkItemExist(request.itemName());
+        UserItem userItem = UserItem.newInstance(user, item);
+        userItemRepository.save(userItem);
+    }
+
+    // 보유한 Items 오름차순 return
+    @Transactional(readOnly = true)
+    public List<UserOwnedItemResponse> getItemList(Long userId) {
+        checkUserExist(userId);
+        return userItemRepository.findItemsByUserId(userId);
     }
 
     @Transactional
@@ -102,5 +111,12 @@ public class UserService {
         if (ku == null)
             throw new NotFoundException(ErrorStatus.NOT_FOUND_KU_EXCEPTION, ErrorStatus.NOT_FOUND_KU_EXCEPTION.getMessage());
         return ku;
+    }
+
+    private Item checkItemExist(String itemName) {
+        Item item = itemRepository.findByName(itemName);
+        if (item == null)
+            throw new NotFoundException(ErrorStatus.NOT_FOUND_ITEM_EXCEPTION, ErrorStatus.NOT_FOUND_ITEM_EXCEPTION.getMessage());
+        return item;
     }
 }

@@ -19,6 +19,7 @@ public enum ErrorStatus {
      */
     NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     NOT_FOUND_KU_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 Ku입니다."),
+    NOT_FOUND_ITEM_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 아이템입니다."),
 
 
     /**
@@ -26,7 +27,7 @@ public enum ErrorStatus {
      */
     ALREADY_EXIST_USER_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 유저입니다."),
     ALREADY_EXIST_KU_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 Ku입니다."),
-
+    ALREADY_EXIST_ITEM_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 아이템입니다."),
 
     /**
      * 500 INTERNAL SERVER ERROR

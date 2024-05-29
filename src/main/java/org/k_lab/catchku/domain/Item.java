@@ -11,23 +11,23 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Ku extends AuditingTimeEntity {
+public class Item extends AuditingTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 100, nullable = false)
     private String name;
     @Column(nullable = false)
-    private int score;
-    @OneToMany(mappedBy = "ku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserKu> userKuList = new ArrayList<>();
+    private int value;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserItem> userItemList = new ArrayList<>();
 
-    private Ku(String name, int score) {
+    private Item(String name, int value) {
         this.name = name;
-        this.score = score;
+        this.value = value;
     }
 
-    public static Ku newInstance(String name, int score) {
-        return new Ku(name, score);
+    public static Item newInstance(String name, int value) {
+        return new Item(name, value);
     }
 }

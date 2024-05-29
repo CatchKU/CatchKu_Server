@@ -26,6 +26,8 @@ public class User extends AuditingTimeEntity {
     private Department department;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserKu> kuList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserItem> itemList = new ArrayList<>();
 
     private User(String email, String password, String name, Department department) {
         this.email = email;
