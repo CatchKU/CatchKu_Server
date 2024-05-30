@@ -30,6 +30,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // mysql --version
     implementation 'mysql:mysql-connector-java:8.0.30'
+
+    implementation 'org.postgresql:postgresql:42.3.1'
+
     // swagger
     //implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
