@@ -77,11 +77,25 @@ public class UserService {
     }
 
     @Transactional
-    public void obtainItem(UserObtainItemRequest request) {
+    public void obtainItem(UserItemInteractRequest request) {
         User user = checkUserExist(request.userId());
         Item item = checkItemExist(request.itemName());
         UserItem userItem = UserItem.newInstance(user, item);
         userItemRepository.save(userItem);
+    }
+
+    @Transactional
+    public void useItem(UserItemInteractRequest request) {
+        User user = checkUserExist(request.userId());
+        checkItemExist(request.itemName());
+        for (UserItem userItem : user.getItemList()) {
+            if (request.itemName().equals(userItem.getItem().getName())) {
+                user.getItemList().remove(userItem);
+                userItemRepository.delete(userItem);
+                return;
+            }
+        }
+        throw new NotFoundException(ErrorStatus.NOT_FOUND_USER_ITEM_EXCEPTION, ErrorStatus.NOT_FOUND_USER_ITEM_EXCEPTION.getMessage());
     }
 
     // 보유한 Items 오름차순 return

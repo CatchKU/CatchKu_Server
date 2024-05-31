@@ -20,6 +20,7 @@ public enum ErrorStatus {
     NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     NOT_FOUND_KU_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 Ku입니다."),
     NOT_FOUND_ITEM_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 아이템입니다."),
+    NOT_FOUND_USER_ITEM_EXCEPTION(HttpStatus.NOT_FOUND, "유저가 해당 아이템을 보유하고 있지 않습니다."),
 
 
     /**
